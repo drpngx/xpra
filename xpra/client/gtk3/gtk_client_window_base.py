@@ -2376,6 +2376,7 @@ class GTKClientWindowBase(ClientWindowBase, Gtk.Window):
         return [button for mask, button in BUTTON_MASK.items() if event.state & mask]
 
     def parse_key_event(self, event, pressed):
+        ## PNG: this generates the key event that will go to process_key_event.
         keyval = event.keyval
         keycode = event.hardware_keycode
         keyname = Gdk.keyval_name(keyval) or ""

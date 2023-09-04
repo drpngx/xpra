@@ -39,6 +39,22 @@ def do_get_gtk_keymap(display, ignore_keys:Tuple[Any]) -> Tuple[Tuple[int,str,in
     log("keymap_get_for_display(%s)=%s, direction=%s, bidirectional layouts: %s",
         display, keymap, keymap.get_direction(), keymap.have_bidi_layouts())
     keycodes : List[Tuple[int,str,int,int,int]] = []
+
+# 2023-09-03 18:59:58,256 ======== PNG: keyval for Hyper_L: 16777215
+# 2023-09-03 18:59:58,256 ======== PNG: Hyper_L[0]: keycode: 50, group: 0
+    keyval_hyper = Gdk.keyval_from_name('hyper_L')
+    log("======== PNG: keyval for Hyper_L: %s" % keyval_hyper)
+    # log("======== PNG: found, keys, keyvals: %s" % keymap.get_entries_for_keyval(keyval_super))
+    entries = keymap.get_entries_for_keyval(keyval_hyper)
+    assert entries
+    found, keys = entries
+    assert found
+    for j, key in enumerate(keys):
+        keycode = key.keycode
+        group = key.group or 0
+        log("======== PNG: Hyper_L[%d]: keycode: %s, group: %s", j, keycode, group)
+
+
     for i in range(0, 2**8):
         entries = keymap.get_entries_for_keycode(i)
         if not entries: # pragma: no cover

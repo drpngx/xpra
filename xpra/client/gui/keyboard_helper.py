@@ -221,6 +221,7 @@ class KeyboardHelper:
             log.info("key event %s on window %i", key_event, wid)
 
     def send_key_action(self, wid:int, key_event:KeyEvent) -> None:
+        # PNG: send key action happens here.
         log("send_key_action(%s, %s)", wid, key_event)
         packet = ["key-action", wid]
         for x in ("keyname", "pressed", "modifiers", "keyval", "string", "keycode", "group"):
