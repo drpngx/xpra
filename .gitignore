@@ -25,6 +25,7 @@ htmlcov/
 # the HTML5 client may be symlinked here for some builds
 # (ie: MS Windows and MacOS)
 html5
+xpra-html5
 
 # Things that should never be added to the repository:
 password.*
