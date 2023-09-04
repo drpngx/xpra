@@ -80,6 +80,10 @@ class Keyboard(KeyboardBase):
         * simulate 'Alt_Gr'
     """
 
+    def __init__(self):
+        super().__init__()
+        self.hyper_modifier = False
+
     def init_vars(self) -> None:
         super().init_vars()
         self.num_lock_modifier = None
@@ -313,6 +317,25 @@ class Keyboard(KeyboardBase):
         #self.modifier_keycodes = {"ISO_Level3_Shift": [108]}
         #we can only deal with 'Alt_R' and simulate AltGr (ISO_Level3_Shift)
         #if we have modifier_mappings
+        # if key_event.keyname in ("Delete", "DELETE", "Meta_L", "LWIN", "RWIN"):
+        #     # KeyEvent(modifiers=[], keyname=Meta_L, keyval=65511, keycode=91, group=0, string=, pressed=True)
+        #     # KeyEvent(modifiers=[], keyname=Delete, keyval=65535, keycode=46, group=0, string=, pressed=False)
+        #     log("===== PNG: %s" % key_event)
+        # Need to send the modifier as follows:
+        # send_key_action(1, KeyEvent(modifiers=['shift'], keyname=J, keyval=74, keycode=74, group=0, string=J, pressed=False))
+        if key_event.keyname == "Delete":
+            key_event.keyname = "Hyper_L"
+            key_event.keyval = 16777215
+            key_event.group = 0
+            key_event.keycode = 50
+            log("==== PNG: TRANSLATE DELETE TO HYPER [pressed=%s]", key_event.pressed)
+            self.hyper_modifier = key_event.pressed
+        else:
+            log("==== PNG: KEY [%s%s]", 'H-' if self.hyper_modifier else '', key_event.keyname)
+            if self.hyper_modifier:
+                key_event.modifiers.append('mod4')  # windows?
+                # key_event.modifiers.append('shift')
+                # key_event.keyname = 'Hyper_' + key_event.keyname.upper()
         if EMULATE_ALTGR and self.altgr_modifier and len(self.modifier_mappings)>0:
             rmenu = GetKeyState(win32con.VK_RMENU)
             if key_event.keyname=="Control_L":
