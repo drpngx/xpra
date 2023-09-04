@@ -2570,6 +2570,7 @@ class GTKClientWindowBase(ClientWindowBase, Gtk.Window):
         return v
 
     def parse_key_event(self, event, pressed: bool) -> KeyEvent:
+        ## PNG: this generates the key event that will go to process_key_event.
         keyval = event.keyval
         keycode = event.hardware_keycode
         keyname = Gdk.keyval_name(keyval) or ""
